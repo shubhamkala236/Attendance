@@ -129,17 +129,17 @@ app.get('/attendance/payroll/:id',async (req,res,next) => {
     
             const {data} = await service.getEmployeeSalarySlipByMonthAndYear(id,month,year);
             //    console.log(data);
-            const stream = res.writeHead(200,{
-                'Content-Type': 'application/pdf',
-                'Content-Disposition': 'attachment;filename=salary.pdf'
-            });
+            // const stream = res.writeHead(200,{
+            //     'Content-Type': 'application/pdf',
+            //     'Content-Disposition': 'attachment;filename=salary.pdf'
+            // });
             
-            pdfService.sendPdf(
-                (chunk) => stream.write(chunk),
-                () => stream.end(),
-                data
-            );
-            
+            // pdfService.sendPdf(
+            //     (chunk) => stream.write(chunk),
+            //     () => stream.end(),
+            //     data
+            // );
+            res.json(data);
 
 
                 
