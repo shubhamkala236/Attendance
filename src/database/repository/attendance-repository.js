@@ -278,14 +278,14 @@ class AttendanceRepository {
         month:month,
         year:year
         });
-        // console.log(attendanceDetail);
-      //   if(!attendanceDetail){
-      //     return {message:"Cannot generate Slip"};
-      //   }
+        console.log(userDetail);
+        if(!attendanceDetail){
+          return {message:"Cannot generate Slip"};
+        }
 
-      // if(!payRollDetail){
-      //   return {message:"Cannot generate Slip please register payroll first"};
-      // }
+      if(!payRollDetail){
+        return {message:"Cannot generate Slip please register payroll first"};
+      }
       
       //now we have payrolldetail , userInfo , salaryDetails using these create field for pdf
       const {PF_Employee,Basic,HRA,Convince,LTA,SPL,PF_Employer,Employee_id,ESIC_Employer,ESIC_Employee,TDS,MEDICAL,PF_NUMBER,ESIC_NUMBER} = salaryDetail.data;
@@ -309,7 +309,7 @@ class AttendanceRepository {
 
       var gross = Basic+HRA+MEDICAL+LTA+SPL; //gps
 
-      var LOP  = (gross/WorkingDays)*attendanceDetail.leaves;
+      var LOP  = (gross*attendanceDetail.leaves)/WorkingDays;
 
       var GPS = 0;
       //GROSS PAYABLE SALARY 
@@ -352,15 +352,21 @@ class AttendanceRepository {
         leaves: attendanceDetail.leaves,
         employeeId: attendanceDetail.employeeId,
         year: attendanceDetail.year,
-        Pf:PF_Employee,
+        Pf:pf,
+        PF_NUMBER:PF_NUMBER,
+        ESIC_NUMBER:ESIC_NUMBER,
+        PF_Employee:PF_Employee,
         PF_Employer:PF_Employer,
+        Employee_id:Employee_id,
+        ESIC_Employee:ESIC_Employee,
+        ESIC_Employer:ESIC_Employer,
+        TDS:TDS,
         Esic:esic,
         deduction:deduction,
         CIH:cih,
         LWF:lwf,
         GPS:GPS,
         Basic:Basic,
-        HRA:HRA,
         HRA:HRA,
         LTA:LTA,
         SPL:SPL,
@@ -369,10 +375,12 @@ class AttendanceRepository {
         designation:designation,
         panNumber:panNumber,
         adhaar:adhaarNumber,
+        MEDICAL:MEDICAL
       });
 
       const result = await salarySlip.save();
-        // console.log(result);
+        console.log(result);
+        
         return result;
 
       } catch (error) {
